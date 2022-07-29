@@ -1,5 +1,6 @@
 #print("Do you want to play a game of chess?")
 #Write moves for promotion pieces
+#Use while in order to use break instead of return in move()
 def play():
     piece=input("Enter the piece you want to move:")
     if piece=="":
@@ -5476,8 +5477,175 @@ def move(p):
                     play()
             else:
                 play()
-        #elif p=="wki":
-            #complete code
+        elif p=="wki":
+            print("The possible moves are:")
+            i=0
+            j=0
+            (i,j)=find(p)#The indices of the piece is obtained.
+            m=[]
+            if i==0:
+                for k in range(1,2):
+                    if c[k][j][0][0]=="w":
+                        break
+                    elif c[k][j][0][0]=="b":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+            elif i==7:
+                for k in range(6,5,-1):
+                    if c[k][j][0][0]=="w":
+                        break
+                    elif c[k][j][0][0]=="b":
+                        m.append(label(k,j)+"(To betaken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+                    
+            else:
+                for k in range(i-1,i-2,-1):
+                    if c[k][j][0][0]=="w":
+                        break
+                    elif c[k][j][0][0]=="b":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+                for k in range(i+1,i+2):
+                    if c[k][j][0][0]=="w":
+                        break
+                    elif c[k][j][0][0]=="b":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+            if j==0:
+                for k in range(1,2):
+                    if c[i][k][0][0]=="w":
+                        break
+                    elif c[i][k][0][0]=="b":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+            elif j==7:
+                for k in range(6,5,-1):
+                    if c[i][k][0][0]=="w":
+                        break
+                    elif c[i][k][0][0]=="b":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+                    
+            else:
+                for k in range(j-1,j-2,-1):
+                    if c[i][k][0][0]=="w":
+                        break
+                    elif c[i][k][0][0]=="b":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+                for k in range(j+1,j+2):
+                    if c[i][k][0][0]=="w":
+                        break
+                    elif c[i][k][0][0]=="b":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+            for k in range(1,2):
+                if i-k>=0:
+                    if j+k<=7:
+                        if c[i-k][j+k][0][0]=="w":
+                            break
+                        elif c[i-k][j+k][0][0]=="b":
+                            m.append(label(i-k,j+k)+"(To be taken)")
+                            break
+                        elif c[i-k][j+k][0][0]=="e":
+                            m.append(label(i-k,j+k))
+            for k in range(1,2):
+                if i-k>=0:
+                    if j-k>=0:
+                        if c[i-k][j-k][0][0]=="w":
+                            break
+                        elif c[i-k][j-k][0][0]=="b":
+                            m.append(label(i-k,j-k)+"(To be taken)")
+                            break
+                        elif c[i-k][j-k][0][0]=="e":
+                            m.append(label(i-k,j-k))
+            for k in range(1,2):
+                if i+k<=7:
+                    if j+k<=7:
+                        if c[i+k][j+k][0][0]=="w":
+                            break
+                        elif c[i+k][j+k][0][0]=="b":
+                            m.append(label(i+k,j+k)+"(To be taken)")
+                            break
+                        elif c[i+k][j+k][0][0]=="e":
+                            m.append(label(i+k,j+k))
+            for k in range(1,2):
+                if i+k<=7:
+                    if j-k>=0:
+                        if c[i+k][j-k][0][0]=="w":
+                            break
+                        elif c[i+k][j-k][0][0]=="b":
+                            m.append(label(i+k,j-k)+"(To be taken)")
+                            break
+                        elif c[i+k][j-k][0][0]=="e":
+                            m.append(label(i+k,j-k))
+            print("Checking for check")
+            print("unfiltered m=",m)
+            remove_list=[]
+            for y in m:
+                print("y=",y)
+                a=0
+                (s,t)=index(y[0:2])#To exclude brackets
+                temp_piece=c[s][t][0]
+                c[i][j].remove(p)#hello
+                c[i][j].append("empty")
+                c[s][t].remove(c[s][t][0])
+                c[s][t].append(p)
+                print(y,a)
+                print("white_check")
+                a=white_check()
+                print(y,a)
+                if a==True:
+                    c[s][t].remove(p)
+                    c[s][t].append(temp_piece)
+                    c[i][j].remove("empty")
+                    c[i][j].append(p)
+                    print(y,"removing")
+                    remove_list.append(y)
+                else:
+                    c[s][t].remove(p)
+                    c[s][t].append(temp_piece)
+                    c[i][j].remove("empty")
+                    c[i][j].append(p)
+            for y in remove_list:
+                m.remove(y)
+            print(m)
+            if m==[]:
+                print("White king is under check\nChoose another piece")
+                play()
+            else:
+                n=input("Choose your move:")
+                (s,t)=index(n)#User defined function
+                c[i][j].remove(p)
+                c[i][j].append("empty")
+                c[s][t].remove(c[s][t][0])
+                c[s][t].append(p)
+            
+            for i in range(len(c)):
+                print(c[i],"\n")
+            if black_check()==True:
+                if black_check_mate()==True:
+                    print("Black Checkmate\nWhite wins!")
+                else:
+                    play()
+            else:
+                play()
         elif p=="bp1":
             print("The possible moves are:")
             i=0
@@ -7218,6 +7386,176 @@ def move(p):
                     play()
             else:
                 play()
+        elif p=="bki":
+            print("The possible moves are:")
+            i=0
+            j=0
+            (i,j)=find(p)#The indices of the piece is obtained.
+            m=[]
+            if i==0:
+                for k in range(1,2):
+                    if c[k][j][0][0]=="b":
+                        break
+                    elif c[k][j][0][0]=="w":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+            elif i==7:
+                for k in range(6,5,-1):
+                    if c[k][j][0][0]=="b":
+                        break
+                    elif c[k][j][0][0]=="w":
+                        m.append(label(k,j)+"(To betaken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+                    
+            else:
+                for k in range(i-1,i-2,-1):
+                    if c[k][j][0][0]=="b":
+                        break
+                    elif c[k][j][0][0]=="w":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+                for k in range(i+1,i+2):
+                    if c[k][j][0][0]=="b":
+                        break
+                    elif c[k][j][0][0]=="w":
+                        m.append(label(k,j)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(k,j))
+            if j==0:
+                for k in range(1,2):
+                    if c[i][k][0][0]=="b":
+                        break
+                    elif c[i][k][0][0]=="w":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+            elif j==7:
+                for k in range(6,5,-1):
+                    if c[i][k][0][0]=="b":
+                        break
+                    elif c[i][k][0][0]=="w":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+                    
+            else:
+                for k in range(j-1,j-2,-1):
+                    if c[i][k][0][0]=="b":
+                        break
+                    elif c[i][k][0][0]=="w":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+                for k in range(j+1,j+2):
+                    if c[i][k][0][0]=="b":
+                        break
+                    elif c[i][k][0][0]=="w":
+                        m.append(label(i,k)+"(To be taken)")
+                        break
+                    else:
+                        m.append(label(i,k))
+            for k in range(1,2):
+                if i-k>=0:
+                    if j+k<=7:
+                        if c[i-k][j+k][0][0]=="b":
+                            break
+                        elif c[i-k][j+k][0][0]=="w":
+                            m.append(label(i-k,j+k)+"(To be taken)")
+                            break
+                        elif c[i-k][j+k][0][0]=="e":
+                            m.append(label(i-k,j+k))
+            for k in range(1,2):
+                if i-k>=0:
+                    if j-k>=0:
+                        if c[i-k][j-k][0][0]=="b":
+                            break
+                        elif c[i-k][j-k][0][0]=="w":
+                            m.append(label(i-k,j-k)+"(To be taken)")
+                            break
+                        elif c[i-k][j-k][0][0]=="e":
+                            m.append(label(i-k,j-k))
+            for k in range(1,2):
+                if i+k<=7:
+                    if j+k<=7:
+                        if c[i+k][j+k][0][0]=="b":
+                            break
+                        elif c[i+k][j+k][0][0]=="w":
+                            m.append(label(i+k,j+k)+"(To be taken)")
+                            break
+                        elif c[i+k][j+k][0][0]=="e":
+                            m.append(label(i+k,j+k))
+            for k in range(1,2):
+                if i+k<=7:
+                    if j-k>=0:
+                        if c[i+k][j-k][0][0]=="b":
+                            break
+                        elif c[i+k][j-k][0][0]=="w":
+                            m.append(label(i+k,j-k)+"(To be taken)")
+                            break
+                        elif c[i+k][j-k][0][0]=="e":
+                            m.append(label(i+k,j-k))
+            print("Checking for check")
+            print("unfiltered m=",m)
+            remove_list=[]
+            for y in m:
+                print("y=",y)
+                a=0
+                (s,t)=index(y[0:2])#To exclude brackets
+                temp_piece=c[s][t][0]
+                c[i][j].remove(p)#hello
+                c[i][j].append("empty")
+                c[s][t].remove(c[s][t][0])
+                c[s][t].append(p)
+                print(y,a)
+                print("black_check")
+                a=black_check()
+                print(y,a)
+                if a==True:
+                    c[s][t].remove(p)
+                    c[s][t].append(temp_piece)
+                    c[i][j].remove("empty")
+                    c[i][j].append(p)
+                    print(y,"removing")
+                    remove_list.append(y)
+                else:
+                    c[s][t].remove(p)
+                    c[s][t].append(temp_piece)
+                    c[i][j].remove("empty")
+                    c[i][j].append(p)
+            for y in remove_list:
+                m.remove(y)
+            print(m)
+            if m==[]:
+                print("Black king is under check\nChoose another piece")
+                play()
+            else:
+                n=input("Choose your move:")
+                (s,t)=index(n)#User defined function
+                c[i][j].remove(p)
+                c[i][j].append("empty")
+                c[s][t].remove(c[s][t][0])
+                c[s][t].append(p)
+            
+            for i in range(len(c)):
+                print(c[i],"\n")
+            if white_check()==True:
+                if white_check_mate()==True:
+                    print("White Checkmate\nBlack wins!")
+                else:
+                    play()
+            else:
+                play()
+
     else:
         print("The piece is not found")
         play()
